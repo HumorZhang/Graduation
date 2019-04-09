@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.laboratory.graduation.mapper.LabMapper">
+    <resultMap id="BaseResultMap" type="com.laboratory.graduation.model.Lab" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <id column="location" property="location" jdbcType="VARCHAR" />
+        <result column="identifier" property="identifier" jdbcType="VARCHAR" />
+        <result column="lab_name" property="labname" jdbcType="VARCHAR" />
+
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, location, identifier, lab_name
+    </sql>
+
+    <select id="selectLabs" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Lab">
+        SELECT <include refid="Base_Column_List"/> FROM lab
+
+
+    </select>
+
+
+</mapper>
