@@ -1,7 +1,6 @@
 package com.laboratory.graduation.mapper;
 
 import com.laboratory.graduation.model.Lab;
-import com.laboratory.graduation.model.User;
 import com.laboratory.graduation.util.MyMapper;
 
 import java.util.List;
