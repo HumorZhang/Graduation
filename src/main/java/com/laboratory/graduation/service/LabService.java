@@ -10,4 +10,12 @@ import java.util.List;
  */
 public interface LabService  {
     List<Lab> selectLab(Lab lab);
+
+    int updateByLabId(Lab lab);
+
+    Lab selectLabById(String id);
+
+    int deleteById(String id);
+
+
 }

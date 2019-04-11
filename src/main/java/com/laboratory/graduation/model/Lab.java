@@ -52,4 +52,14 @@ public class Lab implements Serializable {
     public void setLabname(String labname) {
         this.labname = labname;
     }
+
+    @Override
+    public String toString() {
+        return "Lab{" +
+                "id=" + id +
+                ", location='" + location + '\'' +
+                ", identifier='" + identifier + '\'' +
+                ", labname='" + labname + '\'' +
+                '}';
+    }
 }

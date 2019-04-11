@@ -14,9 +14,23 @@
 
     <select id="selectLabs" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Lab">
         SELECT <include refid="Base_Column_List"/> FROM lab
+        <if test="identifier !=null and identifier != ''">
+            WHERE identifier like concat('%', #{identifier}, '%')
+        </if>
+
+    </select>
+
+    <select id="selectLabById" resultMap="BaseResultMap" parameterType="string">
+        SELECT <include refid="Base_Column_List"/> FROM lab where id = #{id,jdbcType=BIGINT}
 
 
     </select>
 
+    <update id="updateByLabId" parameterType="com.laboratory.graduation.model.Lab">
+        update lab SET identifier=#{identifier},location=#{location},lab_name=#{labname} where id = #{id,jdbcType=BIGINT}
+    </update>
 
+    <delete id="deleteById" parameterType="string">
+        delete
+    </delete>
 </mapper>

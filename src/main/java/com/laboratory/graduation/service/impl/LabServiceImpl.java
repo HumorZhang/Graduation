@@ -21,4 +21,19 @@ public class LabServiceImpl implements LabService {
     public List<Lab> selectLab(Lab lab) {
         return labMapper.selectLabs(lab);
     }
+
+    @Override
+    public int updateByLabId(Lab lab) {
+        return labMapper.updateByLabId(lab);
+    }
+
+    @Override
+    public Lab selectLabById(String id) {
+        return labMapper.selectLabById(id);
+    }
+
+    @Override
+    public int deleteById(String id) {
+        return labMapper.deleteById(id);
+    }
 }

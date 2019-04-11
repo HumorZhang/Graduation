@@ -5,16 +5,22 @@ import com.github.pagehelper.PageInfo;
 
 import com.laboratory.graduation.model.Lab;
 
+import com.laboratory.graduation.model.User;
 import com.laboratory.graduation.service.LabService;
+import com.laboratory.graduation.util.CoreConst;
 import com.laboratory.graduation.util.PageUtil;
 import com.laboratory.graduation.util.ResultUtil;
 import com.laboratory.graduation.vo.base.PageResultVo;
+import com.laboratory.graduation.vo.base.ResponseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,5 +43,40 @@ public class LabController {
         List<Lab> labList = labService.selectLab(lab);
         PageInfo<Lab> pages = new PageInfo<>(labList);
         return ResultUtil.table(labList,pages.getTotal());
+    }
+
+    /**编辑实验室详情*/
+    @GetMapping("/edit")
+    public String userDetail(Model model, String id){
+        Lab lab = labService.selectLabById(id);
+
+        model.addAttribute("lab", lab);
+        return "lab/labDetail";
+    }
+
+    /**编辑实验室*/
+    @PostMapping("/edit")
+    @ResponseBody
+    public ResponseVo editLab(Lab labForm){
+        int a = labService.updateByLabId(labForm);
+        System.out.println(labForm);
+        if (a > 0) {
+            return ResultUtil.success("编辑用户成功！");
+        } else {
+            return ResultUtil.error("编辑用户失败");
+        }
+    }
+
+    /**删除实验室*/
+    @GetMapping("/delete")
+    @ResponseBody
+    public ResponseVo deleteUser(String id) {
+
+        int a = labService.deleteById(id);
+        if (a > 0) {
+            return ResultUtil.success("删除用户成功");
+        } else {
+            return ResultUtil.error("删除用户失败");
+        }
     }
 }

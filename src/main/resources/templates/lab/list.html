@@ -10,9 +10,9 @@
         <form id="formSearch" class="form-horizontal form-search">
             <div class="form-group">
                 <div class="col-md-4 col-sm-6">
-                    <label class="control-label  col-xs-4" for="username">实验室编号:</label>
+                    <label class="control-label  col-xs-4" for="identifier">实验室编号:</label>
                     <div class="col-xs-8">
-                        <input type="text" class="form-control" id="username">
+                        <input type="text" class="form-control" id="identifier">
                     </div>
                 </div>
 
@@ -42,6 +42,23 @@
         <table id="table"></table>
     </div>
 </section>
+
+<!-- 用户详情模态框 -->
+<div id="labDetailModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">实验室信息</h4>
+            </div>
+            <div class="modal-body">
+                <div id="labOpenWindow">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--实验室新增模态框-->
 <div id="userModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog"  role="document">
@@ -51,7 +68,7 @@
                 <h4 class="modal-title">新增实验室</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="userForm">
+                <form class="form-horizontal" id="labForm">
                     <div class="box-body">
                         <div class="form-group">
                             <label  class="col-sm-3 control-label">位置<span style="color: red">*</span>:</label>
@@ -90,7 +107,7 @@
 <script>
     var editFlag = "[[${@perms.hasPerm('lab:edit')}]]";
     var deleteFlag = "[[${@perms.hasPerm('lab:delete')}]]";
-    var assignRoleFlag="[[${@perms.hasPerm('lab:assignRole')}]]";
+
     var userIdStr;//批量用户id
     var roleIdStr;//分配的角色
     var selectRoleIds;
@@ -117,10 +134,11 @@
             align : "center",
             formatter : function(value,
                                  row, index) {
-                var edit = editFlag=="true" ?  '<a class="table-btn table-btn-info" href="javascript:void(0)" onclick="editUser('+row.userId+')">编辑</a>' : '';
-                var assign = assignRoleFlag=="true"  ? '<a class="table-btn table-btn-info"  href="javascript:void(0)" onclick="assignRoleList('+row.userId+')">分配角色</a>':'';
-                var del = deleteFlag=="true"  ?  '<a  class="table-btn table-btn-danger" href="javascript:void(0)" onclick="deleteUser('+row.userId+')">删除</a>' : '';
-                return edit + assign + del;
+                var edit = editFlag=="true" ?  '<a class="table-btn table-btn-info" href="javascript:void(0)" onclick="editLab('+row.id+')">编辑</a>' : '';
+                // var assign = assignRoleFlag=="true"  ? '<a class="table-btn table-btn-info"  href="javascript:void(0)" onclick="assignRoleList('+row.userId+')">分配角色</a>':'';
+                var del = deleteFlag=="true"  ?  '<a  class="table-btn table-btn-danger" href="javascript:void(0)" onclick="deleteLab('+row.id+')">删除</a>' : '';
+                //return edit + assign + del;
+                return edit  + del;
             }
         }];
     var options={
@@ -133,14 +151,14 @@
     }
     Core.initTable(options);
 
+
     /*查询用户参数*/
     function queryParams(params) {
         var temp = { //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
             limit : params.limit, //页面大小
             offset : params.offset, //页码
-            username : $("#username").val(),
-            email: $("#email").val(),
-            phone: $("#phone").val()
+            identifier : $("#identifier").val()
+
         };
         return temp;
     }
@@ -154,22 +172,22 @@
     // }
 
     /*编辑*/
-    // function editUser(userId) {
-    //     Core.load("#userOpenWindow","/user/edit?userId="+userId,function(){
-    //         $("#userDetailModal").modal("show");
-    //     },2);
-    // }
-    // /*删除*/
-    // function deleteUser(userId) {
-    //     Core.confirm("确定删除该用户？",function () {
-    //         Core.postAjax("/user/delete",{"userId":userId},function (data) {
-    //             if(data.status==200){
-    //                 Core.refreshTable("#table");
-    //             }
-    //             layer.msg(data.msg);
-    //         },"get")
-    //     })
-    // }
+    function editLab(labId) {
+        Core.load("#labOpenWindow","/lab/edit?id="+labId,function(){
+            $("#labDetailModal").modal("show");
+        },2);
+    }
+    /*删除*/
+    function deleteLab(id) {
+        Core.confirm("确定删除该用户？",function () {
+            Core.postAjax("/user/delete",{"id":id},function (data) {
+                if(data.status==200){
+                    Core.refreshTable("#table");
+                }
+                layer.msg(data.msg);
+            },"get")
+        })
+    }
     /*分配角色-列表查询*/
     // function assignRoleList(userId) {
     //     userIdChecked=userId;
@@ -227,12 +245,12 @@
 
     $(function () {
         /*查询*/
-        // $("#btn_query").click(function(){
-        //     Core.refreshTable("#table");
-        // });
+        $("#btn_query").click(function(){
+            Core.refreshTable("#table");
+        });
         /*新增*/
         $("#btn_add").click(function(){
-            Core.clearError("#userForm");
+            Core.clearError("#labForm");
         });
         /*批量删除*/
         // $("#btn_batch_delete").click(function(){
@@ -303,13 +321,13 @@
         // });
         /*保存用戶*/
         $("#saveUser").click(function(){
-            if(doValidForm(userForm)){
+            if(doValidForm(labForm)){
                 Core.mask("#saveUser");
-                Core.postAjax("/user/add",$("#userForm").serialize(),function (data) {
+                Core.postAjax("/user/add",$("#labForm").serialize(),function (data) {
                     Core.unmask("#saveUser");
                     if(data.status==200){
                         $("#userModal").modal("hide");
-                        $("#userForm")[0].reset();
+                        $("#labForm")[0].reset();
                         Core.refreshTable("#table")
                     }
                     layer.msg(data.msg);

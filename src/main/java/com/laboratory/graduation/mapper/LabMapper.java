@@ -11,4 +11,10 @@ import java.util.List;
  */
 public interface LabMapper extends MyMapper<Lab> {
     List<Lab> selectLabs(Lab lab);
+
+    int updateByLabId(Lab lab);
+
+    Lab selectLabById(String id);
+
+    int deleteById(String id);
 }
