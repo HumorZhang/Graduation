@@ -33,7 +33,15 @@ public class LabServiceImpl implements LabService {
     }
 
     @Override
-    public int deleteById(String id) {
-        return labMapper.deleteById(id);
+    public int updateStatusById(String id) {
+        return labMapper.updateStatusById(id);
+
     }
+
+    @Override
+    public int addLab(Lab lab) {
+        return labMapper.insert(lab);
+    }
+
+
 }

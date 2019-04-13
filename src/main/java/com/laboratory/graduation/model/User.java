@@ -83,6 +83,27 @@ public class User implements Serializable{
     @Transient
     private String loginIpAddress;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", sex=" + sex +
+                ", age=" + age +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", lastLoginTime=" + lastLoginTime +
+                ", loginIpAddress='" + loginIpAddress + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
     /**
      * 角色
      */

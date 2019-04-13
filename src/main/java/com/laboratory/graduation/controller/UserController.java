@@ -70,6 +70,7 @@ public class UserController {
         userForm.setUpdateTime(date);
         userForm.setLastLoginTime(date);
         PasswordHelper.encryptPassword(userForm);
+        System.out.println(userForm.toString());
         int num = userService.register(userForm);
         if(num > 0){
             return ResultUtil.success("添加用户成功");

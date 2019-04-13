@@ -19,7 +19,17 @@ public class Lab implements Serializable {
 
     private String identifier;
 
-    private String labname;
+    private String labName;
+
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Integer getId() {
         return id;
@@ -45,21 +55,11 @@ public class Lab implements Serializable {
         this.identifier = identifier;
     }
 
-    public String getLabname() {
-        return labname;
+    public String getLabName() {
+        return labName;
     }
 
-    public void setLabname(String labname) {
-        this.labname = labname;
-    }
-
-    @Override
-    public String toString() {
-        return "Lab{" +
-                "id=" + id +
-                ", location='" + location + '\'' +
-                ", identifier='" + identifier + '\'' +
-                ", labname='" + labname + '\'' +
-                '}';
+    public void setLabName(String labName) {
+        this.labName = labName;
     }
 }

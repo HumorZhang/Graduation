@@ -15,7 +15,9 @@ public interface LabService  {
 
     Lab selectLabById(String id);
 
-    int deleteById(String id);
+    int updateStatusById(String id);
+
+    int addLab(Lab lab);
 
 
 }

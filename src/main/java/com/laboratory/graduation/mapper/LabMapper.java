@@ -16,5 +16,7 @@ public interface LabMapper extends MyMapper<Lab> {
 
     Lab selectLabById(String id);
 
-    int deleteById(String id);
+    int updateStatusById(String id);
+
+
 }

@@ -54,6 +54,27 @@ public class LabController {
         return "lab/labDetail";
     }
 
+    @PostMapping("/add")
+    @ResponseBody
+    public ResponseVo addLab(Lab labForm){
+
+
+        List lab = labService.selectLab(labForm);
+        if (null != lab) {
+            return ResultUtil.error("实验室已存在");
+        }
+        labForm.setStatus("1");
+        System.out.println(labForm.toString());
+
+        int a = labService.addLab(labForm);
+        if(a > 0){
+            return ResultUtil.success("添加实验室成功");
+        }else {
+            return ResultUtil.error("添加实验室失败");
+        }
+    }
+
+
     /**编辑实验室*/
     @PostMapping("/edit")
     @ResponseBody
@@ -72,7 +93,7 @@ public class LabController {
     @ResponseBody
     public ResponseVo deleteUser(String id) {
 
-        int a = labService.deleteById(id);
+        int a = labService.updateStatusById(id);
         if (a > 0) {
             return ResultUtil.success("删除用户成功");
         } else {

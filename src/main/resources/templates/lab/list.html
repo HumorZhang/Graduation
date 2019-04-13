@@ -29,15 +29,11 @@
     <div class="jax-box jax-box-table">
         <div id="toolbar" class="btn-group">
             <shiro:hasPermission name="lab:add">
-                <button id="btn_add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#userModal">
+                <button id="btn_add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#labModal">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
                 </button>
             </shiro:hasPermission>
-            <shiro:hasPermission name="lab:batchDelete">
-                <button id="btn_batch_delete" type="button" class="btn btn-danger">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>批量删除
-                </button>
-            </shiro:hasPermission>
+
         </div>
         <table id="table"></table>
     </div>
@@ -60,7 +56,7 @@
 </div>
 
 <!--实验室新增模态框-->
-<div id="userModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="labModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog"  role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -87,7 +83,7 @@
                             <label  class="col-sm-3 control-label">实验室名称 :</label>
 
                             <div class="col-sm-8">
-                                <input name="labname" class="form-control" placeholder="">
+                                <input name="labName" class="form-control" placeholder="">
                             </div>
                         </div>
 
@@ -124,7 +120,7 @@
             title: '实验室编号',
             align : "center"
         }, {
-            field: 'labname',
+            field: 'labName',
             title: '实验室名称',
             align : "center",
         },
@@ -179,8 +175,8 @@
     }
     /*删除*/
     function deleteLab(id) {
-        Core.confirm("确定删除该用户？",function () {
-            Core.postAjax("/user/delete",{"id":id},function (data) {
+        Core.confirm("确定删除该实验室？",function () {
+            Core.postAjax("/lab/delete",{"id":id},function (data) {
                 if(data.status==200){
                     Core.refreshTable("#table");
                 }
@@ -188,58 +184,7 @@
             },"get")
         })
     }
-    /*分配角色-列表查询*/
-    // function assignRoleList(userId) {
-    //     userIdChecked=userId;
-    //     $("#assignRoleModal").modal("show");
-    //     if(loadRoleCount==0){
-    //         var roleColumns=[
-    //             {checkbox: true },
-    //             {
-    //                 field: 'roleId',
-    //                 title: '角色ID',
-    //                 align : "center"
-    //             }, {
-    //                 field: 'name',
-    //                 title: '角色名称',
-    //                 align : "center"
-    //             }, {
-    //                 field: 'description',
-    //                 title: '角色描述',
-    //                 align : "center"
-    //             },
-    //             {
-    //                 field: 'status',
-    //                 title: '角色状态',
-    //                 align : "center",
-    //                 formatter:function(value,row, index){
-    //                     return row.status == '1' ? "有效" : "删除";
-    //                 }
-    //             }];
-    //         var roleOptions={
-    //             id:"#assignRoleTable",
-    //             url: "/user/assign/role/list",
-    //             columns:roleColumns,
-    //             pagination : false,
-    //             queryParams : queryRoleParams,
-    //             onLoadSuccess: function(){  //加载成功时执行
-    //                 loadRoleCount=1;
-    //                 Core.checkTableBy("#assignRoleTable",{field:"roleId", values:selectRoleIds});
-    //             },
-    //             responseHandler : handleRoleData,
-    //         }
-    //         Core.initTable(roleOptions);
-    //     }
-    //     if(loadRoleCount==1){
-    //         Core.refreshTable("#assignRoleTable");
-    //     }
-    // }
 
-    // /*处理角色数据*/
-    // function handleRoleData(res){
-    //     selectRoleIds = res.hasRoles;
-    //     return res.rows;
-    // }
 
 
 
@@ -271,62 +216,15 @@
         //         })
         //     }
         // });
-        /*分配角色*/
-        // $("#btn_assign_role").click(function(){
-        //     var result = Core.selectSingleData("#table");
-        //     if(result){
-        //         $("#assignRoleModal").modal("show");
-        //         if(loadRoleCount==0){
-        //             var roleColumns=[
-        //                 {checkbox: true },
-        //                 {
-        //                     field: 'roleId',
-        //                     title: '角色ID',
-        //                     align : "center"
-        //                 }, {
-        //                     field: 'name',
-        //                     title: '角色名称',
-        //                     align : "center"
-        //                 }, {
-        //                     field: 'description',
-        //                     title: '角色描述',
-        //                     align : "center"
-        //                 },
-        //                 {
-        //                     field: 'status',
-        //                     title: '角色状态',
-        //                     align : "center",
-        //                     formatter:function(value,row, index){
-        //                         return row.status == '1' ? "有效" : "删除";
-        //                     }
-        //                 }];
-        //             var roleOptions={
-        //                 id:"#assignRoleTable",
-        //                 url: "/user/assign/role/list",
-        //                 columns:roleColumns,
-        //                 pagination : false,
-        //                 queryParams : queryRoleParams,
-        //                 onLoadSuccess: function(){  //加载成功时执行
-        //                     loadRoleCount=1;
-        //                     Core.checkTableBy("#assignRoleTable",{field:"roleId", values:selectRoleIds});
-        //                 },
-        //                 responseHandler : handleRoleData,
-        //             }
-        //             Core.initTable(roleOptions);
-        //         }
-        //         if(loadRoleCount==1){
-        //             Core.refreshTable("#assignRoleTable");
-        //         }
-        //     }
-        // });
-        /*保存用戶*/
-        $("#saveUser").click(function(){
+
+        /*保存实验室*/
+        $("#saveLab").click(function(){
             if(doValidForm(labForm)){
-                Core.mask("#saveUser");
-                Core.postAjax("/user/add",$("#labForm").serialize(),function (data) {
-                    Core.unmask("#saveUser");
+                Core.mask("#saveLab");
+                Core.postAjax("/lab/add",$("#labForm").serialize(),function (data) {
+                    Core.unmask("#saveLab");
                     if(data.status==200){
-                        $("#userModal").modal("hide");
+                        $("#labModal").modal("hide");
                         $("#labForm")[0].reset();
                         Core.refreshTable("#table")
                     }

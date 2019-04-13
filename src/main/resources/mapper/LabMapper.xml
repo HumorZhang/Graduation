@@ -5,7 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <id column="location" property="location" jdbcType="VARCHAR" />
         <result column="identifier" property="identifier" jdbcType="VARCHAR" />
-        <result column="lab_name" property="labname" jdbcType="VARCHAR" />
+        <result column="lab_name" property="labName" jdbcType="VARCHAR" />
 
     </resultMap>
     <sql id="Base_Column_List" >
@@ -14,23 +14,24 @@
 
     <select id="selectLabs" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Lab">
         SELECT <include refid="Base_Column_List"/> FROM lab
+        WHERE status=1
         <if test="identifier !=null and identifier != ''">
-            WHERE identifier like concat('%', #{identifier}, '%')
+           AND identifier like concat('%', #{identifier}, '%')
         </if>
 
     </select>
 
     <select id="selectLabById" resultMap="BaseResultMap" parameterType="string">
         SELECT <include refid="Base_Column_List"/> FROM lab where id = #{id,jdbcType=BIGINT}
-
-
     </select>
 
     <update id="updateByLabId" parameterType="com.laboratory.graduation.model.Lab">
-        update lab SET identifier=#{identifier},location=#{location},lab_name=#{labname} where id = #{id,jdbcType=BIGINT}
+        update lab SET identifier=#{identifier},location=#{location},lab_name=#{labName} where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteById" parameterType="string">
-        delete
-    </delete>
+    <update id="updateStatusById" parameterType="string">
+        update lab SET status=0 where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
 </mapper>
