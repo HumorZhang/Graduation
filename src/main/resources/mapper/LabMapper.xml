@@ -3,7 +3,7 @@
 <mapper namespace="com.laboratory.graduation.mapper.LabMapper">
     <resultMap id="BaseResultMap" type="com.laboratory.graduation.model.Lab" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <id column="location" property="location" jdbcType="VARCHAR" />
+        <result column="location" property="location" jdbcType="VARCHAR" />
         <result column="identifier" property="identifier" jdbcType="VARCHAR" />
         <result column="lab_name" property="labName" jdbcType="VARCHAR" />
 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.laboratory.graduation.mapper.EquipmentMapper">
+    <resultMap id="BaseResultMap" type="com.laboratory.graduation.model.Equipment" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="belong_lab" property="belongLab" jdbcType="VARCHAR" />
+        <result column="number" property="number" jdbcType="VARCHAR" />
+        <result column="equipname" property="equipname" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="VARCHAR" />
+        <result column="spec" property="spec" jdbcType="VARCHAR" />
+        <result column="manufactor" property="manufactor" jdbcType="VARCHAR" />
+        <result column="unitprice" property="unitprice" jdbcType="FLOAT" />
+
+        <result column="amount" property="amount" jdbcType="INTEGER" />
+        <result column="sum_of_money" property="sumOfMoney" jdbcType="FLOAT" />
+        <result column="warehousing_time" property="warehousingTime" jdbcType="TIMESTAMP" />
+        <result column="using_direction" property="usingDirection" jdbcType="VARCHAR" />
+        <result column="sto_location" property="stoLocation" jdbcType="VARCHAR" />
+
+        <result column="leader" property="leader" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="damage" property="damage" jdbcType="INTEGER" />
+
+
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id
+        ,belong_lab
+        ,number
+        ,equipname
+        ,version
+        ,spec
+        ,manufactor
+        ,unitprice
+        ,amount
+        ,sum_of_money
+        ,warehousing_time
+        ,using_direction
+        ,sto_location
+        ,factory_number
+        ,leader
+        ,status
+        ,damage
+    </sql>
+
+    <select id="selectEquipments" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Equipment">
+        SELECT <include refid="Base_Column_List"/> FROM equipment
+        WHERE status=1
+        <if test="equipname !=null and equipname != ''">
+            AND equipname like concat('%', #{equipname}, '%')
+        </if>
+    </select>
+
+    <select id="selectAllEquipments" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List"/> FROM equipment
+        WHERE status=1
+
+    </select>
+
+    <select id="selectEquipmentByNumber" resultMap="BaseResultMap" parameterType="string">
+        SELECT <include refid="Base_Column_List"/> FROM equipment where number = #{number,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateByNumber" parameterType="com.laboratory.graduation.model.Lab">
+        update equipment SET identifier=#{identifier},location=#{location},lab_name=#{labName} where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateStatusByNumber" parameterType="string">
+        update equipment SET status=0 where number = #{number,jdbcType=BIGINT}
+    </update>
+
+
+</mapper>

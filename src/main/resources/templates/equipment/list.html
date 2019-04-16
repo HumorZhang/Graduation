@@ -1,0 +1,232 @@
+<section class="content-header">
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">设备管理</a></li>
+        <li class="active">设备信息</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="jax-box">
+        <form id="formSearch" class="form-horizontal form-search">
+            <div class="form-group">
+                <div class="col-md-4 col-sm-6">
+                    <label class="control-label  col-xs-4" for="equipname">设备名称:</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" id="equipname">
+                    </div>
+                </div>
+
+                <shiro:hasPermission name="equipment:list">
+                    <div class="col-md-1 col-sm-6 " style="text-align:left;">
+                        <button type="button" id="btn_query" class="btn btn-info">查询</button>
+                    </div>
+                </shiro:hasPermission>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="jax-box jax-box-table">
+        <div id="toolbar" class="btn-group">
+            <shiro:hasPermission name="equipment:add">
+                <button id="btn_add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#equipmentModal">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>导出表格
+                </button>
+            </shiro:hasPermission>
+
+        </div>
+        <table id="table"></table>
+    </div>
+</section>
+
+<!-- 设备详情模态框 -->
+<div id="equipmentDetailModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备信息</h4>
+            </div>
+            <div class="modal-body">
+                <div id="equipmentOpenWindow">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--设备新增模态框-->
+
+<script>
+    var editFlag = "[[${@perms.hasPerm('equipment:edit')}]]";
+    var deleteFlag = "[[${@perms.hasPerm('equipment:delete')}]]";
+
+    var columns = [
+        {checkbox: true },
+        {
+            field: 'belongLab',
+            title: '所属实验室',
+            align : "center"
+        },{
+            field: 'number',
+            title: '设备编号',
+            align : "center"
+        }, {
+            field: 'equipname',
+            title: '设备名称',
+            align : "center",
+        }, {
+            field: 'version',
+            title: '版本',
+            align : "center"
+        },{
+            field: 'spec',
+            title: '规格',
+            align : "center"
+        }, {
+            field: 'manufactor',
+            title: '厂家',
+            align : "center",
+        }, {
+            field: 'usingDirection',
+            title: '使用方向',
+            align : "center"
+        },{
+            field: 'stoLocation',
+            title: '存储位置',
+            align : "center"
+        }, {
+            field: 'leader',
+            title: '领用人',
+            align : "center",
+        }, {
+            field: 'damage',
+            title: '状态',
+            align : "center",
+            formatter:function(value,row, index){
+                 if (row.damage == '1') {
+                     return "正常";
+                 }
+                 else if(row.damage == '2'){
+                     return "报修";
+                 }
+                 else {
+                     return "报废";
+                 }
+            }
+        },
+
+        {
+            field : 'operation',
+            title : '操作',
+            align : "center",
+            formatter : function(value,
+                                 row, index) {
+                var edit = editFlag=="true" ?  '<a class="table-btn table-btn-info" href="javascript:void(0)" onclick="editEquipment('+row.id+')">编辑</a>' : '';
+                var del = deleteFlag=="true"  ?  '<a  class="table-btn table-btn-danger" href="javascript:void(0)" onclick="deleteEquipment('+row.id+')">删除</a>' : '';
+                //return edit + assign + del;
+                return edit  + del;
+            }
+        }];
+    var options={
+        id:"#table",
+        url: '/equipment/list',
+        columns:columns,
+        toolbar: '#toolbar',
+        showRefresh: true,
+        queryParams : queryParams
+    }
+    Core.initTable(options);
+
+
+    /*查询实验室参数*/
+    function queryParams(params) {
+        var temp = { //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+            limit : params.limit, //页面大小
+            offset : params.offset, //页码
+            equipname : $("#equipname").val()
+
+        };
+        return temp;
+    }
+
+
+
+    /*编辑*/
+    function editEquipment(equipmentId) {
+        Core.load("#equipmentOpenWindow","/equipment/edit?id="+equipmentId,function(){
+            $("#equipmentDetailModal").modal("show");
+        },2);
+    }
+    /*删除*/
+    function deleteEquipment(id) {
+        Core.confirm("确定删除该实验室？",function () {
+            Core.postAjax("/equipment/delete",{"id":id},function (data) {
+                if(data.status==200){
+                    Core.refreshTable("#table");
+                }
+                layer.msg(data.msg);
+            },"get")
+        })
+    }
+
+
+
+
+    $(function () {
+        /*查询*/
+        $("#btn_query").click(function(){
+            Core.refreshTable("#table");
+
+        });
+        /*新增*/
+        $("#btn_add").click(function(){
+            Core.clearError("#equipmentForm");
+            $.ajax({
+                    type: "GET",
+                    url: "/equipment/excel"
+                }
+
+
+            )
+
+        });
+        /*批量删除*/
+        // $("#btn_batch_delete").click(function(){
+        //     var checkedRows= Core.selectMutiData("#table");
+        //     if(checkedRows){
+        //         Core.confirm("确定删除选中的"+checkedRows.length+"条记录？",function () {
+        //             userIdStr = "";
+        //             $.each(checkedRows, function (i, item) {
+        //                 userIdStr += (item.userId + ",");
+        //             })
+        //             userIdStr = userIdStr.substring(0, userIdStr.length - 1);
+        //             Core.postAjax("/user/batch/delete", {"userIdStr": userIdStr}, function (data) {
+        //                 if (data.status == 200) {
+        //                     Core.refreshTable("#table");
+        //                 }
+        //                 layer.msg(data.msg);
+        //             }, "get")
+        //         })
+        //     }
+        // });
+
+        /*保存实验室*/
+        $("#saveEquipment").click(function(){
+            if(doValidForm(equipmentForm)){
+                Core.mask("#saveEquipment");
+                Core.postAjax("/equipment/add",$("#equipmentForm").serialize(),function (data) {
+                    Core.unmask("#saveEquipment");
+                    if(data.status==200){
+                        $("#equipmentModal").modal("hide");
+                        $("#equipmentForm")[0].reset();
+                        Core.refreshTable("#table")
+                    }
+                    layer.msg(data.msg);
+                })
+            };
+        });
+
+    });
+
+</script>

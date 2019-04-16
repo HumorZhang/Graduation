@@ -104,11 +104,6 @@
     var editFlag = "[[${@perms.hasPerm('lab:edit')}]]";
     var deleteFlag = "[[${@perms.hasPerm('lab:delete')}]]";
 
-    var userIdStr;//批量用户id
-    var roleIdStr;//分配的角色
-    var selectRoleIds;
-    var userIdChecked;
-    var loadRoleCount=0;
     var columns = [
         {checkbox: true },
         {
@@ -148,7 +143,7 @@
     Core.initTable(options);
 
 
-    /*查询用户参数*/
+    /*查询实验室参数*/
     function queryParams(params) {
         var temp = { //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
             limit : params.limit, //页面大小
@@ -159,13 +154,7 @@
         return temp;
     }
 
-    /*查询角色参数*/
-    // function queryRoleParams(params){
-    //     var temp = {
-    //         userId :userIdChecked
-    //     };
-    //     return temp;
-    // }
+
 
     /*编辑*/
     function editLab(labId) {
@@ -195,7 +184,9 @@
         });
         /*新增*/
         $("#btn_add").click(function(){
-            Core.clearError("#labForm");
+            ajax(
+
+            )
         });
         /*批量删除*/
         // $("#btn_batch_delete").click(function(){
@@ -232,26 +223,7 @@
                 })
             };
         });
-        /*分配角色保存*/
-        // $("#saveAssign").click(function () {
-        //     var checkedRows= Core.selectMutiData("#assignRoleTable");
-        //     if(checkedRows){
-        //         Core.mask("#saveAssign");
-        //         roleIdStr="";
-        //         $.each(checkedRows, function (i, item) {
-        //             roleIdStr+=(item.roleId+",");
-        //         })
-        //         roleIdStr=roleIdStr.substring(0,roleIdStr.length-1);
-        //         Core.postAjax('/user/assign/role',{userId:userIdChecked,roleIdStr:roleIdStr},function (data) {
-        //             Core.unmask("#saveAssign");
-        //             if(data.status==200){
-        //                 $("#assignRoleModal").modal("hide");
-        //                 Core.refreshTable("#table");
-        //             }
-        //             layer.msg(data.msg);
-        //         })
-        //     }
-        // })
+
     });
 
 </script>

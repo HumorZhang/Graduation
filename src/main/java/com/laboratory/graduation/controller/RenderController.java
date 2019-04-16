@@ -40,6 +40,9 @@ public class RenderController {
         return "lab/list";
     }
 
+    @GetMapping("/equipments")
+    public String equipments(){ return "equipment/list";}
+
     /*在线用户入口*/
     @GetMapping("/online/users")
     public String onlineUsers(){return "onlineUsers/list";}
