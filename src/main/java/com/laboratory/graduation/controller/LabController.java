@@ -54,6 +54,20 @@ public class LabController {
         return "lab/labDetail";
     }
 
+    /**编辑实验室*/
+    @PostMapping("/edit")
+    @ResponseBody
+    public ResponseVo editLab(Lab labForm){
+        int a = labService.updateByLabId(labForm);
+        System.out.println(labForm);
+        if (a > 0) {
+            return ResultUtil.success("编辑实验室成功！");
+        } else {
+            return ResultUtil.error("编辑实验室失败");
+        }
+    }
+
+
     @PostMapping("/add")
     @ResponseBody
     public ResponseVo addLab(Lab labForm){
@@ -75,18 +89,6 @@ public class LabController {
     }
 
 
-    /**编辑实验室*/
-    @PostMapping("/edit")
-    @ResponseBody
-    public ResponseVo editLab(Lab labForm){
-        int a = labService.updateByLabId(labForm);
-        System.out.println(labForm);
-        if (a > 0) {
-            return ResultUtil.success("编辑用户成功！");
-        } else {
-            return ResultUtil.error("编辑用户失败");
-        }
-    }
 
     /**删除实验室*/
     @GetMapping("/delete")
@@ -95,9 +97,9 @@ public class LabController {
 
         int a = labService.updateStatusById(id);
         if (a > 0) {
-            return ResultUtil.success("删除用户成功");
+            return ResultUtil.success("删除实验室成功");
         } else {
-            return ResultUtil.error("删除用户失败");
+            return ResultUtil.error("删除实验室失败");
         }
     }
 }

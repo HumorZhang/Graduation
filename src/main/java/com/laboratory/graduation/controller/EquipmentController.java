@@ -4,13 +4,17 @@ package com.laboratory.graduation.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.laboratory.graduation.model.Equipment;
+import com.laboratory.graduation.model.User;
 import com.laboratory.graduation.service.EquipmentService;
 import com.laboratory.graduation.util.PageUtil;
 import com.laboratory.graduation.util.ResultUtil;
 import com.laboratory.graduation.vo.base.PageResultVo;
+import com.laboratory.graduation.vo.base.ResponseVo;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,11 +29,11 @@ public class EquipmentController {
     private EquipmentService equipmentService;
 
 
+
     @PostMapping("/list")
     @ResponseBody
-    public PageResultVo loadEquipment(Equipment equipment, Integer limit, Integer offset){
+    public PageResultVo loadEquipment(Equipment equipment, Integer limit, Integer offset, Model model){
         PageHelper.startPage(PageUtil.getPageNo(limit, offset),limit);
-
 
         List<Equipment> equipmentList = equipmentService.selectEquipment(equipment);
 
@@ -45,7 +49,7 @@ public class EquipmentController {
 
         List<Equipment> classmateList = equipmentService.selectAllEquipment();
 
-        String fileName = "equipmentinf"  + ".xls";//设置要导出的文件的名字
+        String fileName = "equipmentInfo"  + ".xls";//设置要导出的文件的名字
         //新增数据行，并且设置单元格数据
 
         int rowNum = 1;
@@ -93,6 +97,7 @@ public class EquipmentController {
             row1.createCell(8).setCellValue(equipment.getAmount());
             row1.createCell(9).setCellValue(equipment.getSumOfMoney());
             row1.createCell(10).setCellValue(equipment.getWarehousingTime());
+            System.out.println(equipment.getWarehousingTime());
             row1.createCell(11).setCellValue(equipment.getUsingDirection());
 
             row1.createCell(12).setCellValue(equipment.getStoLocation());
@@ -106,67 +111,50 @@ public class EquipmentController {
         response.setHeader("Content-disposition", "attachment;filename=" + fileName);
         response.flushBuffer();
         workbook.write(response.getOutputStream());
+
+
+    }
+
+
+    /**编辑实验室详情*/
+    @GetMapping("/edit")
+    public String equipmentDetail(Model model, String id){
+        Equipment equipment = equipmentService.selectEquipmentById(id);
+
+        model.addAttribute("equipment", equipment);
+        return "equipment/equipmentDetail";
+    }
+
+
+    @PostMapping("/edit")
+    @ResponseBody
+    public ResponseVo editLab(Equipment equipmentForm){
+        int a = equipmentService.updateByNumber(equipmentForm);
+        System.out.println("id="+equipmentForm.getId());
+        System.out.println("damage="+equipmentForm.getDamage());
+
+        if (a > 0) {
+            return ResultUtil.success("编辑设备成功！");
+        } else {
+            return ResultUtil.error("编辑设备失败");
+        }
     }
 
 
 
+    /**删除实验室*/
+    @GetMapping("/delete")
+    @ResponseBody
+    public ResponseVo deleteUser(String id) {
+
+        int a = equipmentService.updateStatusById(id);
+        if (a > 0) {
+            return ResultUtil.success("删除设备成功");
+        } else {
+            return ResultUtil.error("删除设备失败");
+        }
+    }
 
 
 
-
-//    /**编辑实验室详情*/
-//    @GetMapping("/edit")
-//    public String userDetail(Model model, String id){
-//        Lab lab = labService.selectLabById(id);
-//
-//        model.addAttribute("lab", lab);
-//        return "lab/labDetail";
-//    }
-
-//    @PostMapping("/add")
-//    @ResponseBody
-//    public ResponseVo addLab(Equipment equipmentForm){
-//
-//
-//        List equipment = equipmentService.selectEquipment(equipmentForm);
-//        if (null != equipment) {
-//            return ResultUtil.error("实验室已存在");
-//        }
-//        equipmentForm.setStatus(1);
-//
-//
-//        int a = equipmentService.addLab(labForm);
-//        if(a > 0){
-//            return ResultUtil.success("添加实验室成功");
-//        }else {
-//            return ResultUtil.error("添加实验室失败");
-//        }
-//    }
-
-
-//    /**编辑实验室*/
-//    @PostMapping("/edit")
-//    @ResponseBody
-//    public ResponseVo editLab(Lab labForm){
-//        int a = labService.updateByLabId(labForm);
-//        System.out.println(labForm);
-//        if (a > 0) {
-//            return ResultUtil.success("编辑用户成功！");
-//        } else {
-//            return ResultUtil.error("编辑用户失败");
-//        }
-//    }
-
-//    /**删除实验室*/
-//    @GetMapping("/delete")
-//    @ResponseBody
-//    public ResponseVo deleteUser(String id) {
-//
-//        int a = labService.updateStatusById(id);
-//        if (a > 0) {
-//            return ResultUtil.success("删除用户成功");
-//        } else {
-//            return ResultUtil.error("删除用户失败");
-//        }
-//    }
 }

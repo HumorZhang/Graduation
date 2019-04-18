@@ -21,23 +21,28 @@ public class EquipmentServiceImpl  implements EquipmentService {
     }
 
     @Override
+    public List<Equipment> selectEquipmentDamage(Equipment equipment) {
+        return equipmentMapper.selectEquipmentsDamage(equipment);
+    }
+
+    @Override
     public List<Equipment> selectAllEquipment() {
         return equipmentMapper.selectAllEquipments();
     }
 
     @Override
     public int updateByNumber(Equipment equipment) {
-        return 0;
+        return equipmentMapper.updateByNumber(equipment);
     }
 
     @Override
-    public Lab selectEquipmentByNumber(String number) {
-        return null;
+    public Equipment selectEquipmentById(String id) {
+        return equipmentMapper.selectEquipmentById(id);
     }
 
     @Override
     public int updateStatusById(String id) {
-        return 0;
+        return equipmentMapper.updateStatusByNumber(id);
     }
 
     @Override

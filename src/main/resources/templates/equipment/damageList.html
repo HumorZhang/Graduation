@@ -3,44 +3,8 @@
         <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
         <li><a href="#">设备管理</a></li>
         <li class="active">设备信息</li>
-
     </ol>
 </section>
-
-<!--导入模态框-->
-<div id="excelModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog"  role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">导入Excel文件</h4>
-            </div>
-            <div class="modal-body">
-
-                <form class="form-horizontal" id="excelForm" enctype="multipart/form-data" >
-                    <div class="box-body">
-
-                        <div class="form-group">
-                            <label  class="col-sm-3 control-label">文件 :</label>
-
-                            <div class="col-sm-8">
-                                <input class="form-input" type="file" name="filename">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-footer">
-                        <div class="pull-right">
-                            <button type="submit" id="saveUser"  class="btn btn-info">确定</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--查询 导入 导出-->
 <section class="content">
     <div class="jax-box">
         <form id="formSearch" class="form-horizontal form-search">
@@ -63,30 +27,18 @@
 
 
     <div class="jax-box jax-box-table">
-        <div id="toolbar" class="btn-group">
-            <shiro:hasPermission name="equipment:out">
-                <button id="btn_out" type="button" class="btn btn-primary" data-toggle="modal" data-target="#equipmentModal">
-                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>导出表格
-                </button>
-            </shiro:hasPermission>
 
-            <shiro:hasPermission name="equipment:add">
-            <button id="btn_in" type="button" class="btn btn-danger" data-toggle="modal" data-target="#excel    Modal">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>导入表格
-            </button>
-            </shiro:hasPermission>
-
-        </div>
         <table id="table"></table>
     </div>
 </section>
 
+<!-- 设备详情模态框 -->
 <div id="equipmentDetailModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">用户信息</h4>
+                <h4 class="modal-title">设备信息</h4>
             </div>
             <div class="modal-body">
                 <div id="equipmentOpenWindow">
@@ -96,7 +48,7 @@
     </div>
 </div>
 
-
+<!--设备新增模态框-->
 
 <script>
 
@@ -145,15 +97,15 @@
             title: '状态',
             align : "center",
             formatter:function(value,row, index){
-                 if (row.damage == '1') {
-                     return "正常";
-                 }
-                 else if(row.damage == '2'){
-                     return "报修";
-                 }
-                 else {
-                     return "报废";
-                 }
+                if (row.damage == '1') {
+                    return "正常";
+                }
+                else if(row.damage == '2'){
+                    return "报修";
+                }
+                else {
+                    return "报废";
+                }
             }
         },
 
@@ -163,14 +115,15 @@
             align : "center",
             formatter : function(value,
                                  row, index) {
-                var del = deleteFlag=="true"  ?  '<a  class="table-btn table-btn-danger" href="javascript:void(0)" onclick="deleteEquipment('+row.id+')">删除</a>' : '<a  class="table-btn table-btn-info" href="javascript:void(0)" onclick="updateEquipment('+row.id+')">提交</a>';
-
+                // var edit = editFlag=="true" ?  '<a class="table-btn table-btn-info" href="javascript:void(0)" onclick="editEquipment('+row.id+')">编辑</a>' : '';
+                var del = deleteFlag=="true"  ?  '<a  class="table-btn table-btn-danger" href="javascript:void(0)" onclick="deleteEquipment('+row.id+')">同意</a>' : '';
+                //return edit + assign + del;
                 return  del;
             }
         }];
     var options={
         id:"#table",
-        url: '/equipment/list',
+        url: '/equipmentDamage/list',
         columns:columns,
         toolbar: '#toolbar',
         showRefresh: true,
@@ -191,6 +144,8 @@
     }
 
 
+
+
     /*删除*/
     function deleteEquipment(id) {
         Core.confirm("确定删除该设备？",function () {
@@ -204,12 +159,6 @@
     }
 
 
-    function updateEquipment(id) {
-        Core.load("#equipmentOpenWindow","/equipment/edit?id="+id,function(){
-            $("#equipmentDetailModal").modal("show");
-        },2);
-    }
-
 
 
     $(function () {
@@ -222,10 +171,11 @@
         $("#btn_out").click(function(){
             Core.clearError("#equipmentForm");
             window.location.href = 'equipment/excel'
+
+
+
         });
-        $("#btn_in").click(function(){
-            Core.clearError("#userForm");
-        });
+
 
     });
 

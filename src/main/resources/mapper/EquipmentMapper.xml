@@ -45,7 +45,15 @@
 
     <select id="selectEquipments" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Equipment">
         SELECT <include refid="Base_Column_List"/> FROM equipment
-        WHERE status=1
+        WHERE status=1 AND damage=1
+        <if test="equipname !=null and equipname != ''">
+            AND equipname like concat('%', #{equipname}, '%')
+        </if>
+    </select>
+
+    <select id="selectEquipmentsDamage" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Equipment">
+        SELECT <include refid="Base_Column_List"/> FROM equipment
+        WHERE damage!=1
         <if test="equipname !=null and equipname != ''">
             AND equipname like concat('%', #{equipname}, '%')
         </if>
@@ -57,16 +65,16 @@
 
     </select>
 
-    <select id="selectEquipmentByNumber" resultMap="BaseResultMap" parameterType="string">
-        SELECT <include refid="Base_Column_List"/> FROM equipment where number = #{number,jdbcType=BIGINT}
+    <select id="selectEquipmentById" resultMap="BaseResultMap" parameterType="string">
+        SELECT <include refid="Base_Column_List"/> FROM equipment where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <update id="updateByNumber" parameterType="com.laboratory.graduation.model.Lab">
-        update equipment SET identifier=#{identifier},location=#{location},lab_name=#{labName} where id = #{id,jdbcType=BIGINT}
+    <update id="updateByNumber" parameterType="com.laboratory.graduation.model.Equipment">
+        update equipment SET damage=#{damage} where id = #{id,jdbcType=BIGINT}
     </update>
 
     <update id="updateStatusByNumber" parameterType="string">
-        update equipment SET status=0 where number = #{number,jdbcType=BIGINT}
+        update equipment SET status=0 where id = #{id,jdbcType=BIGINT}
     </update>
 
 

@@ -43,6 +43,9 @@ public class RenderController {
     @GetMapping("/equipments")
     public String equipments(){ return "equipment/list";}
 
+    @GetMapping("/equipmentDamage")
+    public String equipmentsDamage(){ return "equipment/damageList";}
+
     /*在线用户入口*/
     @GetMapping("/online/users")
     public String onlineUsers(){return "onlineUsers/list";}

@@ -1,0 +1,50 @@
+
+<form class="form-horizontal" id="equipmentDetailForm">
+    <input class="hidden" name="id" th:value="${equipment.id}">
+    <div class="box-body">
+
+
+        <div class="form-group">
+            <label  class="col-sm-3 control-label">状态 :</label>
+            <div class="col-sm-8">
+                <select name="damage" class="form-control" require="必填项">
+                    <option th:selected="${equipment.damage==1}" value="1">正常</option>
+                    <option th:selected="${equipment.damage==2}" value="2">报修</option>
+                    <option th:selected="${equipment.damage==3}" value="3">报废</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+        <div class="pull-right">
+            <button type="button" id="saveDetailEquipment" class="btn btn-info">确定</button>
+            <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
+        </div>
+    </div>
+    <!-- /.box-footer -->
+</form>
+<script>
+    var id = [[${equipment.id}]];
+    var damage = [[${equipment.damage}]];
+    console.log("id="+id);
+
+    console.log("damage="+damage);
+    $(function () {
+        $("#saveDetailEquipment").on('click', function () {
+            if (doValidForm(equipmentDetailForm)) {
+                Core.mask("#saveDetailEquipment");
+                Core.postAjax("/equipment/edit",$("#equipmentDetailForm").serialize(),function (data) {
+                    if (data.status == 200) {
+                        Core.unmask("#saveDetailEquipment");
+                        $("#equipmentDetailModal").modal("hide");
+                        $("#myModal").modal("hide");
+                        Core.refreshTable("#table",true);
+                    }
+                    layer.msg(data.msg);
+                })
+            }
+        });
+    });
+</script>

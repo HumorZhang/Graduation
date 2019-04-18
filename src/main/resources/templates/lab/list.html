@@ -39,7 +39,7 @@
     </div>
 </section>
 
-<!-- 用户详情模态框 -->
+<!-- 实验室详情模态框 -->
 <div id="labDetailModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -183,30 +183,12 @@
             Core.refreshTable("#table");
         });
         /*新增*/
-        $("#btn_add").click(function(){
-            ajax(
-
-            )
-        });
-        /*批量删除*/
-        // $("#btn_batch_delete").click(function(){
-        //     var checkedRows= Core.selectMutiData("#table");
-        //     if(checkedRows){
-        //         Core.confirm("确定删除选中的"+checkedRows.length+"条记录？",function () {
-        //             userIdStr = "";
-        //             $.each(checkedRows, function (i, item) {
-        //                 userIdStr += (item.userId + ",");
-        //             })
-        //             userIdStr = userIdStr.substring(0, userIdStr.length - 1);
-        //             Core.postAjax("/user/batch/delete", {"userIdStr": userIdStr}, function (data) {
-        //                 if (data.status == 200) {
-        //                     Core.refreshTable("#table");
-        //                 }
-        //                 layer.msg(data.msg);
-        //             }, "get")
-        //         })
-        //     }
+        // $("#btn_add").click(function(){
+        //     ajax(
+        //
+        //     )
         // });
+
 
         /*保存实验室*/
         $("#saveLab").click(function(){

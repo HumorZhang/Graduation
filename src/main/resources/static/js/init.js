@@ -42,6 +42,7 @@ $(function(){
                 if(clickHref==aHref){
                     if(aHref.substring(1,aHref.length)!=""){
                         Core.load("#content",aHref.substring(1,aHref.length));
+
                     }
                 }else{
                     clickHref = aHref;//赋值
@@ -153,7 +154,7 @@ $(function(){
 /*锚点改变，加载内容
 * 只需单点击就能，如果注释需要双击菜单栏才能显示内容
 * */
-function loadContent() {
+    function loadContent() {
     var href=document.location.href;
     var href2=href.split("#");
     if(href2.length==1||href2[1]==""){

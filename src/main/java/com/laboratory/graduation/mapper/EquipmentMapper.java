@@ -9,9 +9,11 @@ import java.util.List;
 public interface EquipmentMapper extends MyMapper<Equipment> {
     List<Equipment> selectEquipments(Equipment equipment);
 
+    List<Equipment> selectEquipmentsDamage(Equipment equipment);
+
     int updateByNumber(Equipment equipment);
 
-    Equipment selectEquipmentByNumber(String id);
+    Equipment selectEquipmentById(String id);
 
     int updateStatusByNumber(String id);
 
