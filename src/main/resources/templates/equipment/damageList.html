@@ -70,7 +70,7 @@
             align : "center",
         }, {
             field: 'version',
-            title: '版本',
+            title: '型号',
             align : "center"
         },{
             field: 'spec',
@@ -89,6 +89,10 @@
             title: '存储位置',
             align : "center"
         }, {
+            field: 'factoryNumber',
+            title: '出厂号',
+            align : "center"
+        },{
             field: 'leader',
             title: '领用人',
             align : "center",
@@ -148,7 +152,7 @@
 
     /*删除*/
     function deleteEquipment(id) {
-        Core.confirm("确定删除该设备？",function () {
+        Core.confirm("确定恢复该设备？",function () {
             Core.postAjax("/equipment/delete",{"id":id},function (data) {
                 if(data.status==200){
                     Core.refreshTable("#table");
@@ -168,13 +172,8 @@
 
         });
         /*导出*/
-        $("#btn_out").click(function(){
-            Core.clearError("#equipmentForm");
-            window.location.href = 'equipment/excel'
 
 
-
-        });
 
 
     });

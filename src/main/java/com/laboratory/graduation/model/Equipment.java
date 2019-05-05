@@ -1,46 +1,81 @@
 package com.laboratory.graduation.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import cn.afterturn.easypoi.excel.annotation.Excel;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+
+@Entity
+@Table(name = "equipment")
 public class Equipment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Excel(name = "id" ,orderNum = "0")
     private Integer id;
 
+    @Column(name = "belong_lab")
+    @Excel(name = "所属实验室" ,orderNum = "1")
     private String belongLab;
 
+    @Column(name = "number")
+    @Excel(name = "设备编号" ,orderNum = "2")
     private String number;
 
+    @Column(name = "equipname")
+    @Excel(name = "设备名称" ,orderNum = "3")
     private String equipname;
 
+    @Column(name = "version")
+    @Excel(name = "型号" ,orderNum = "4")
     private String version;
 
+    @Column(name = "spec")
+    @Excel(name = "规格" ,orderNum = "5")
     private String spec;
 
+    @Column(name = "manufactor")
+    @Excel(name = "厂家" ,orderNum = "6")
     private String manufactor;
 
+    @Column(name = "unitprice")
+    @Excel(name = "单价" ,orderNum = "7")
     private float unitprice;
 
+    @Column(name = "amount")
+    @Excel(name = "数量" ,orderNum = "8")
     private Integer amount;
 
+    @Column(name = "sum_of_money")
+    @Excel(name = "金额" ,orderNum = "9")
     private float sumOfMoney;
 
+    @Column(name = "warehousing_time")
+    @Excel(name = "入库时间" ,orderNum = "10",importFormat = "yyyy-MM-dd HH:mm:ss")
     private Date warehousingTime;
 
+    @Column(name = "using_direction")
+    @Excel(name = "使用方向" ,orderNum = "11")
     private  String usingDirection;
 
+    @Column(name = "sto_location")
+    @Excel(name = "存放地点" ,orderNum = "12")
     private String stoLocation;
 
+    @Column(name = "factory_number")
+    @Excel(name = "金额" ,orderNum = "13")
     private String factoryNumber;
 
+    @Column(name = "leader")
+    @Excel(name = "领用人" ,orderNum = "14")
     private String leader;
+
 
     private Integer status;
 
+    @Column(name = "damage")
+    @Excel(name = "毁坏程度" ,orderNum = "15")
     private Integer damage;
 
     @Override

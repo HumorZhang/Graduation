@@ -1,23 +1,36 @@
 package com.laboratory.graduation.controller;
 
 
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
+import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.laboratory.graduation.model.Equipment;
 import com.laboratory.graduation.model.User;
 import com.laboratory.graduation.service.EquipmentService;
+import com.laboratory.graduation.util.ExcelUtiles;
 import com.laboratory.graduation.util.PageUtil;
 import com.laboratory.graduation.util.ResultUtil;
 import com.laboratory.graduation.vo.base.PageResultVo;
 import com.laboratory.graduation.vo.base.ResponseVo;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -114,6 +127,47 @@ public class EquipmentController {
 
 
     }
+
+    @GetMapping("/export")
+    public void export(HttpServletResponse response) {
+
+//        模拟从数据库获取需要导出的数据
+        List<Equipment> classmateList = equipmentService.selectAllEquipment();
+//         导出操作
+        ExcelUtiles.exportExcel(classmateList, "设备信息", "1", Equipment.class, "equipment.xls", response);
+
+    }
+
+    @PostMapping(name ="/import")
+    public void importExcel2(@RequestParam("file") MultipartFile file) {
+        System.out.println("1@@@");
+        ImportParams importParams = new ImportParams();
+        // 数据处理
+        importParams.setHeadRows(1);
+        importParams.setTitleRows(1);
+
+        // 需要验证
+        importParams.setNeedVerfiy(true);
+
+        try {
+            ExcelImportResult<Equipment> result = ExcelImportUtil.importExcelMore(file.getInputStream(), Equipment.class,
+                    importParams);
+
+            List<Equipment> successList = result.getList();
+            for (Equipment equipment : successList) {
+                System.out.println(equipment);
+            }
+        } catch (IOException e) {
+        } catch (Exception e) {
+        }
+        System.out.println("%%%");
+
+    }
+
+
+
+
+
 
 
     /**编辑实验室详情*/

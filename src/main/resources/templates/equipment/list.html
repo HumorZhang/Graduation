@@ -18,19 +18,20 @@
             <div class="modal-body">
 
                 <form class="form-horizontal" id="excelForm" enctype="multipart/form-data" >
+<!--                    th:action="@{/equipment/import}" method="post"-->
                     <div class="box-body">
 
                         <div class="form-group">
                             <label  class="col-sm-3 control-label">文件 :</label>
 
                             <div class="col-sm-8">
-                                <input class="form-input" type="file" name="filename">
+                                <input class="form-input" type="file" name="file">
                             </div>
                         </div>
                     </div>
                     <div class="box-footer">
                         <div class="pull-right">
-                            <button type="submit" id="saveUser"  class="btn btn-info">确定</button>
+                            <button type="submit" id="saveEquipment"  class="btn btn-info">确定</button>
                             <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
                         </div>
                     </div>
@@ -71,7 +72,7 @@
             </shiro:hasPermission>
 
             <shiro:hasPermission name="equipment:add">
-            <button id="btn_in" type="button" class="btn btn-danger" data-toggle="modal" data-target="#excel    Modal">
+            <button id="btn_in" type="button" class="btn btn-danger" data-toggle="modal" data-target="#excelModal">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>导入表格
             </button>
             </shiro:hasPermission>
@@ -86,7 +87,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">用户信息</h4>
+                <h4 class="modal-title">设备信息</h4>
             </div>
             <div class="modal-body">
                 <div id="equipmentOpenWindow">
@@ -118,7 +119,7 @@
             align : "center",
         }, {
             field: 'version',
-            title: '版本',
+            title: '型号',
             align : "center"
         },{
             field: 'spec',
@@ -136,7 +137,12 @@
             field: 'stoLocation',
             title: '存储位置',
             align : "center"
-        }, {
+        },{
+            field: 'factoryNumber',
+            title: '出厂号',
+            align : "center"
+        },
+        {
             field: 'leader',
             title: '领用人',
             align : "center",
@@ -210,7 +216,20 @@
         },2);
     }
 
+    $("#saveEquipment").click(function(){
 
+            Core.mask("#saveEquipment");
+            Core.postAjax("/equipment/import",$("#excelForm").serialize(),function (data) {
+                // Core.unmask("#saveEquipment");
+                if(data.status==200){
+                    $("#excelModal").modal("hide");
+                    $("#excelForm")[0].reset();
+                    Core.refreshTable("#table")
+                }
+                layer.msg(data.msg);
+            })
+
+    });
 
     $(function () {
         /*查询*/
@@ -221,7 +240,8 @@
         /*导出*/
         $("#btn_out").click(function(){
             Core.clearError("#equipmentForm");
-            window.location.href = 'equipment/excel'
+            // window.location.href = 'equipment/excel'
+            window.location.href = 'equipment/export'
         });
         $("#btn_in").click(function(){
             Core.clearError("#userForm");
