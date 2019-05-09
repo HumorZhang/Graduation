@@ -18,4 +18,8 @@ public interface EquipmentMapper extends MyMapper<Equipment> {
     int updateStatusByNumber(String id);
 
     List<Equipment> selectAllEquipments();
+
+    int selectMaxId();
+
+    int insertOne(Equipment equipment);
 }

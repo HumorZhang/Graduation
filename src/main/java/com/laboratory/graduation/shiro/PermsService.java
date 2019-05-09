@@ -5,9 +5,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * js调用 thymeleaf 实现按钮权限
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
  */
 @Component("perms")
 public class PermsService

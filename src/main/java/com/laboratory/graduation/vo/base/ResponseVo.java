@@ -1,9 +1,5 @@
 package com.laboratory.graduation.vo.base;
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 public class ResponseVo<T> {
     private Integer status;
     private String msg;

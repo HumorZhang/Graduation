@@ -6,11 +6,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
 
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 @Component
 public class MyErrorAttributes extends DefaultErrorAttributes {
 

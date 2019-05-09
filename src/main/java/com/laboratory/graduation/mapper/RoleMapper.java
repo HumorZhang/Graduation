@@ -7,11 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 public interface RoleMapper extends MyMapper<Role> {
     /**
      * 根据用户id查询角色集合

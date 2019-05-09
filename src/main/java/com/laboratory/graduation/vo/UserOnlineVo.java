@@ -3,11 +3,7 @@ package com.laboratory.graduation.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @version V1.0
- * @date 2018年7月20日
- * @author superzheng
- */
+
 public class UserOnlineVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;

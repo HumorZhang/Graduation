@@ -12,11 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 @Service
 public class PermissionServiceImpl implements PermissionService {
     @Autowired

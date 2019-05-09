@@ -13,11 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @version V1.0
- * @date 2018年7月13日
- * @author superzheng
- */
+
 @ControllerAdvice
 public class ExceptionHandleController {
     private static final Logger logger = LoggerFactory.getLogger(ExceptionHandleController.class);

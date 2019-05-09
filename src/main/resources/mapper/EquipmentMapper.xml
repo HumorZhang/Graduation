@@ -51,6 +51,35 @@
         </if>
     </select>
 
+    <select id="selectMaxId" resultType="int">
+        SELECT MAX(id) FROM equipment
+
+    </select>
+
+
+    <insert id="insertOne" parameterType="com.laboratory.graduation.model.Equipment">
+        insert into equipment(<include refid="Base_Column_List"/>) values
+    (    #{id}
+        ,#{belongLab}
+        ,#{number}
+        ,#{equipname}
+        ,#{version}
+        ,#{spec}
+        ,#{manufactor}
+        ,#{unitprice}
+        ,#{amount}
+        ,#{sumOfMoney}
+        ,#{warehousingTime}
+        ,#{usingDirection}
+        ,#{stoLocation}
+        ,#{factoryNumber}
+        ,#{leader}
+        ,#{status}
+        ,#{damage}
+        )
+
+    </insert>
+
     <select id="selectEquipmentsDamage" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Equipment">
         SELECT <include refid="Base_Column_List"/> FROM equipment
         WHERE damage!=1

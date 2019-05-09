@@ -5,11 +5,7 @@ import com.laboratory.graduation.model.Permission;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 public interface PermissionService {
 
     /**

@@ -17,8 +17,8 @@
             </div>
             <div class="modal-body">
 
-                <form class="form-horizontal" id="excelForm" enctype="multipart/form-data" >
-<!--                    th:action="@{/equipment/import}" method="post"-->
+                <form class="form-horizontal" id="excelForm" enctype="multipart/form-data" th:action="@{/equipment/import}" method="post" >
+<!--                th:action="@{/equipment/import}" method="post"    -->
                     <div class="box-body">
 
                         <div class="form-group">
@@ -36,6 +36,7 @@
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
@@ -216,20 +217,22 @@
         },2);
     }
 
-    $("#saveEquipment").click(function(){
-
-            Core.mask("#saveEquipment");
-            Core.postAjax("/equipment/import",$("#excelForm").serialize(),function (data) {
-                // Core.unmask("#saveEquipment");
-                if(data.status==200){
-                    $("#excelModal").modal("hide");
-                    $("#excelForm")[0].reset();
-                    Core.refreshTable("#table")
-                }
-                layer.msg(data.msg);
-            })
-
-    });
+    // $("#saveEquipment").click(function(){
+    //
+    //         Core.mask("#saveEquipment");
+    //         Core.postAjax("equipment/import",$("#excelForm").serialize(),function (data) {
+    //             // Core.unmask("#saveEquipment");
+    //             if(data.status==200){
+    //                 $("#excelModal").modal("hide");
+    //                 $("#excelForm")[0].reset();
+    //                 Core.refreshTable("#table")
+    //             }
+    //             layer.msg(data.msg);
+    //         })
+    //     // Core.clearError("#equipmentForm");
+    //     // window.location.href = 'equipment/import'
+    //
+    // });
 
     $(function () {
         /*查询*/
@@ -242,6 +245,7 @@
             Core.clearError("#equipmentForm");
             // window.location.href = 'equipment/excel'
             window.location.href = 'equipment/export'
+
         });
         $("#btn_in").click(function(){
             Core.clearError("#userForm");

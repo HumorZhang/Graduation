@@ -19,11 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 @Controller
 @RequestMapping("/user")
 public class UserController {

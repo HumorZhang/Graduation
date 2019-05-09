@@ -28,11 +28,7 @@ import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 @Configuration
 public class ShiroConfig {
     private static Logger logger = LoggerFactory.getLogger(ShiroConfig.class);

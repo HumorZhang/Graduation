@@ -1,11 +1,7 @@
 package com.laboratory.graduation.exception;
 
 
-/**
- * @version V1.0
- * @date 2018年7月13日
- * @author superzheng
- */
+
 public class ZbException extends RuntimeException {
     /**
      * Constructs a new runtime exception with {@code null} as its

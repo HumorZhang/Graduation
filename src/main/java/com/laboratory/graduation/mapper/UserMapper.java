@@ -6,11 +6,7 @@ import com.laboratory.graduation.util.MyMapper;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 public interface UserMapper extends MyMapper<User> {
     /**
      * 根据user参数查询用户列表

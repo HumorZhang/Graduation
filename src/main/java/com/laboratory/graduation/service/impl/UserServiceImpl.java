@@ -23,11 +23,7 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.*;
 
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 @Service
 public class UserServiceImpl implements UserService {
 

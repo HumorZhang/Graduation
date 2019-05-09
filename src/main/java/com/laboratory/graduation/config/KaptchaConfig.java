@@ -7,11 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
-/**
- * @version V1.0
- * @date 2018年7月11日
- * @author superzheng
- */
+
 @Component
 public class KaptchaConfig {  
     @Bean

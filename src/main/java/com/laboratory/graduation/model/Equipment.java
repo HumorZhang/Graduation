@@ -4,7 +4,8 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
+
 
 
 @Entity
@@ -51,9 +52,17 @@ public class Equipment implements Serializable {
     @Excel(name = "金额" ,orderNum = "9")
     private float sumOfMoney;
 
+    public float getSumOfMoney() {
+        return sumOfMoney;
+    }
+
+    public void setSumOfMoney(float sumOfMoney) {
+        this.sumOfMoney = sumOfMoney;
+    }
+
     @Column(name = "warehousing_time")
     @Excel(name = "入库时间" ,orderNum = "10",importFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date warehousingTime;
+    private Timestamp warehousingTime;
 
     @Column(name = "using_direction")
     @Excel(name = "使用方向" ,orderNum = "11")
@@ -178,19 +187,13 @@ public class Equipment implements Serializable {
         this.amount = amount;
     }
 
-    public float getSumOfMoney() {
-        return sumOfMoney;
-    }
 
-    public void setSumOfMoney(float sumOfMoney) {
-        this.sumOfMoney = sumOfMoney;
-    }
 
-    public Date getWarehousingTime() {
+    public Timestamp getWarehousingTime() {
         return warehousingTime;
     }
 
-    public void setWarehousingTime(Date warehousingTime) {
+    public void setWarehousingTime(Timestamp warehousingTime) {
         this.warehousingTime = warehousingTime;
     }
 

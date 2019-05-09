@@ -1,10 +1,6 @@
 package com.laboratory.graduation.vo;
 
-/**
- * @version V1.0
- * @date 2018年7月20日
- * @author superzheng
- */
+
 public class UserSessionVo {
     private String sessionId;
     private String username;

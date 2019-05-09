@@ -1,10 +1,6 @@
 package com.laboratory.graduation.enums;
 
-/**
- * @version V1.0
- * @date 2018年7月13日
- * @author superzheng
- */
+
 public enum ResponseStatus {
 
     /**
