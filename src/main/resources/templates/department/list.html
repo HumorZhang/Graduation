@@ -1,0 +1,196 @@
+<section class="content-header">
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">部门管理</a></li>
+        <li class="active">所有专业</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="jax-box">
+        <form id="formSearch" class="form-horizontal form-search">
+            <div class="form-group">
+                <div class="col-md-4 col-sm-6">
+                    <label class="control-label  col-xs-4" for="major">专业:</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" id="major">
+                    </div>
+                </div>
+
+
+                <shiro:hasPermission name="department:list">
+                    <div class="col-md-1 col-sm-6 " style="text-align:left;">
+                        <button type="button" id="btn_query" class="btn btn-info">查询</button>
+                    </div>
+                </shiro:hasPermission>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="jax-box jax-box-table">
+        <div id="toolbar" class="btn-group">
+            <shiro:hasPermission name="department:add">
+                <button id="btn_add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#departmentModal">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                </button>
+            </shiro:hasPermission>
+
+        </div>
+        <table id="table"></table>
+    </div>
+</section>
+<!-- 新增模态框 -->
+<div id="departmentModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新增专业</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="departmentForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">部门名称 :<span style="color: red">*</span>:</label>
+                            <div class="col-sm-8">
+<!--                                <input  name="deptName" class="form-control" min="3" require="必填项"  placeholder="">-->
+                                <select name="deptName" class="form-control">
+                                    <option value="null">请选择</option>
+                                    <option value="土木工程学院">土木工程学院</option>
+                                    <option value="信息工程学院">信息工程学院</option>
+                                    <option value="机械学院">机械学院</option>
+                                    <option value="大数据学院">大数据学院</option>
+                                    <option value="材料科学与工程学院">材料科学与工程学院</option>
+                                    <option value="化工学院">化工学院</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">专业 :</label>
+                            <div class="col-sm-8">
+                                <input name="major" class="form-control" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="pull-right">
+                            <button type="button" id="saveDepartment" class="btn btn-info">确定</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div id="userDetailModal" class="modal fade" tabindex="-1" role="dialog">-->
+<!--    <div class="modal-dialog" role="document">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--                <h4 class="modal-title">用户信息</h4>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <div id="userOpenWindow">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<script>
+
+    var deleteFlag = "[[${@perms.hasPerm('user:delete')}]]";
+    var columns = [
+        {checkbox: true },
+        {
+            field: 'deptName',
+            title: '部门名称',
+            align : "center"
+        },{
+            field: 'major',
+            title: '专业',
+            align : "center"
+        },
+        {
+            field : 'operation',
+            title : '操作',
+            align : "center",
+            formatter : function(value,
+                                 row, index) {
+              var del = deleteFlag=="true"  ?  '<a  class="table-btn table-btn-danger" href="javascript:void(0)" onclick="deleteDepartment('+row.id+')">删除</a>' : '';
+                return  del;
+            }
+        }];
+    var options={
+        id:"#table",
+        url: '/department/list',
+        columns:columns,
+        toolbar: '#toolbar',
+        showRefresh: true,
+        queryParams : queryParams
+    }
+    Core.initTable(options);
+
+    /*查询参数*/
+    function queryParams(params) {
+        var temp = { //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+            limit : params.limit, //页面大小
+            offset : params.offset, //页码
+            major : $("#major").val()
+
+        };
+        return temp;
+    }
+
+    /*删除*/
+    function deleteDepartment(id) {
+        Core.confirm("确定删除该专业？",function () {
+            Core.postAjax("/department/delete",{"id":id},function (data) {
+                if(data.status==200){
+                    Core.refreshTable("#table");
+                }
+                layer.msg(data.msg);
+            },"get")
+        })
+    }
+
+
+
+
+
+    $(function () {
+        /*查询*/
+        $("#btn_query").click(function(){
+            Core.refreshTable("#table");
+        });
+        /*新增*/
+        $("#btn_add").click(function(){
+            Core.clearError("#departmentForm");
+        });
+
+
+        /*保存*/
+        $("#saveDepartment").click(function(){
+            if(doValidForm(departmentForm)){
+                Core.mask("#saveDepartment");
+                Core.postAjax("/department/add",$("#departmentForm").serialize(),function (data) {
+                    Core.unmask("#saveDepartment");
+                    if(data.status==200){
+                        $("#departmentModal").modal("hide");
+                        $("#departmentForm")[0].reset();
+                        Core.refreshTable("#table")
+                    }
+                    layer.msg(data.msg);
+                })
+            };
+        });
+        /*分配角色保存*/
+
+    });
+
+</script>

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface EquipmentService {
 
-
+            
     List<Equipment> selectEquipment(Equipment equipment);
 
     List<Equipment> selectEquipmentDamage(Equipment equipment);

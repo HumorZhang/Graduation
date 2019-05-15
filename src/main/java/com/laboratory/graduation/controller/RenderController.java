@@ -39,6 +39,10 @@ public class RenderController {
     @GetMapping("/equipments")
     public String equipments(){ return "equipment/list";}
 
+
+    @GetMapping("/departments")
+    public String departments(){ return "department/list";}
+
     @GetMapping("/equipmentDamage")
     public String equipmentsDamage(){ return "equipment/damageList";}
 

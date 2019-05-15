@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.laboratory.graduation.mapper.DepartmentMapper">
+    <resultMap id="BaseResultMap" type="com.laboratory.graduation.model.Department" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+        <result column="major" property="major" jdbcType="VARCHAR" />
+
+
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, dept_name, major
+    </sql>
+
+    <select id="selectDepartments" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Department">
+        SELECT <include refid="Base_Column_List"/> FROM department
+        WHERE status=1
+        <if test="major !=null and major != ''">
+            AND major like concat('%', #{major}, '%')
+        </if>
+
+    </select>
+
+    <select id="selectDepartmentByMajor" resultMap="BaseResultMap" parameterType="string">
+        SELECT <include refid="Base_Column_List"/> FROM department where major = #{major}
+    </select>
+
+<!--    <update id="updateByLabId" parameterType="com.laboratory.graduation.model.Lab">-->
+<!--        update lab SET identifier=#{identifier},location=#{location},lab_name=#{labName} where id = #{id,jdbcType=BIGINT}-->
+<!--    </update>-->
+
+    <update id="updateStatusById" parameterType="string">
+        update department SET status=0 where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+</mapper>
