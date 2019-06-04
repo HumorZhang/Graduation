@@ -86,7 +86,16 @@
                                 <input name="labName" class="form-control" placeholder="">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">所属部门 :</label>
 
+                            <div class="col-sm-8">
+
+                                <select name="belongDept" class="form-control">
+                                    <option  th:each="list:${listMajor}" th:value="${list.major}" th:text="${list.major}"></option>
+                                </select>
+                            </div>
+                        </div>
 
                     </div>
                     <div class="box-footer">
@@ -117,6 +126,10 @@
         }, {
             field: 'labName',
             title: '实验室名称',
+            align : "center",
+        }, {
+            field: 'belongDept',
+            title: '所属部门',
             align : "center",
         },
         {

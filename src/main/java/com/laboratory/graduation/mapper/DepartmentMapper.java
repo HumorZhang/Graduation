@@ -8,8 +8,10 @@ import java.util.List;
 public interface DepartmentMapper extends MyMapper<Department> {
     List<Department> selectDepartments(Department department);
 
-    Department selectDepartmentByMajor(Department department);
+    Department selectDepartmentByTeam(Department department);
 
     int updateStatusById(String id);
+
+    List<Department> selectMajor();
 
 }

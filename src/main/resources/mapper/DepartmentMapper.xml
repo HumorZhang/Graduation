@@ -5,11 +5,11 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
         <result column="major" property="major" jdbcType="VARCHAR" />
-
+        <result column="team" property="team" jdbcType="VARCHAR" />
 
     </resultMap>
     <sql id="Base_Column_List" >
-        id, dept_name, major
+        id, dept_name, major,team
     </sql>
 
     <select id="selectDepartments" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Department">
@@ -21,8 +21,8 @@
 
     </select>
 
-    <select id="selectDepartmentByMajor" resultMap="BaseResultMap" parameterType="string">
-        SELECT <include refid="Base_Column_List"/> FROM department where major = #{major}
+    <select id="selectDepartmentByTeam" resultMap="BaseResultMap" parameterType="string">
+        SELECT <include refid="Base_Column_List"/> FROM department where team = #{team}
     </select>
 
 <!--    <update id="updateByLabId" parameterType="com.laboratory.graduation.model.Lab">-->
@@ -33,5 +33,8 @@
         update department SET status=0 where id = #{id,jdbcType=BIGINT}
     </update>
 
+    <select id="selectMajor" resultMap="BaseResultMap">
+        SELECT  DISTINCT(major) from department
 
+    </select>
 </mapper>

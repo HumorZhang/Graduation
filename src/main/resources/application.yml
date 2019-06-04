@@ -7,7 +7,7 @@ logging:
     com.laboratory.graduation: DEBUG
     tk.mybatis: DEBUG
     org.springframework: WARN
-#  file: log/zb-shiro.log
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource

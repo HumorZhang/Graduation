@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.laboratory.graduation.mapper.CourseMapper">
+    <resultMap id="BaseResultMap" type="com.laboratory.graduation.model.Course" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="score" property="score" jdbcType="INTEGER" />
+        <result column="course_number" property="courseNumber" jdbcType="VARCHAR" />
+        <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+        <result column="class_hour" property="classHour" jdbcType="INTEGER"/>
+        <result column="major" property="major" jdbcType="VARCHAR"/>
+        <result column="teacher" property="teacher" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="fraction" property="fraction" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, dept_name, major,team
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        SELECT id,score,course_number,course_name,class_hour,major,teacher,user_id,fraction FROM course
+
+
+    </select>
+
+
+    <update id="updateByCourseId" parameterType="com.laboratory.graduation.model.Course">
+        update course SET fraction=#{fraction} where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+
+
+</mapper>

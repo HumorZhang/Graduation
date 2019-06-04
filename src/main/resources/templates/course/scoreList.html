@@ -1,0 +1,123 @@
+<section class="content-header">
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">课程管理</a></li>
+        <li class="active">所有课程</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+
+
+
+    <div class="jax-box jax-box-table">
+        <div id="toolbar" class="btn-group">
+
+
+        </div>
+        <table id="table"></table>
+    </div>
+</section>
+
+
+
+
+
+
+<script>
+
+
+    var columns = [
+        {checkbox: true },
+        {
+            field: 'courseName',
+            title: '课程名',
+            align : "center"
+        },{
+            field: 'major',
+            title: '专业',
+            align : "center"
+        },
+        {
+            field: 'teacher',
+            title: '老师',
+            align : "center"
+        },
+        {
+            field: 'score',
+            title: '学分',
+            align : "center"
+        }, {
+            field: 'classHour',
+            title: '学时',
+            align : "center"
+        }, {
+            field: 'courseNumber',
+            title: '课程编号',
+            align : "center"
+        },
+        {
+            field: 'userId',
+            title: '学生',
+            align : "center"
+        },
+        {
+            field: 'fraction',
+            title: '分数',
+            align : "center"
+        }
+
+       ];
+    var options={
+        id:"#table",
+        url: '/courseStudent/list',
+        columns:columns,
+        toolbar: '#toolbar',
+        showRefresh: true,
+        queryParams : queryParams
+    }
+    Core.initTable(options);
+
+    /*查询参数*/
+    function queryParams(params) {
+        var temp = { //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+            limit : params.limit, //页面大小
+            offset : params.offset, //页码
+            major : $("#major").val()
+
+        };
+        return temp;
+    }
+
+    /*编辑*/
+    function editUser(courseId) {
+        Core.load("#courseOpenWindow","/course/edit?courseId="+courseId,function(){
+            $("#courseDetailModal").modal("show");
+        },2);
+    }
+
+
+
+
+    $(function () {
+
+        /*保存*/
+        $("#saveDepartment").click(function(){
+            if(doValidForm(departmentForm)){
+                Core.mask("#saveDepartment");
+                Core.postAjax("/department/add",$("#departmentForm").serialize(),function (data) {
+                    Core.unmask("#saveDepartment");
+                    if(data.status==200){
+                        $("#departmentModal").modal("hide");
+                        $("#departmentForm")[0].reset();
+                        Core.refreshTable("#table")
+                    }
+                    layer.msg(data.msg);
+                })
+            };
+        });
+
+
+    });
+
+</script>

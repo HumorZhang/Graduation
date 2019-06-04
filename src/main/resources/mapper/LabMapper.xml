@@ -9,7 +9,7 @@
 
     </resultMap>
     <sql id="Base_Column_List" >
-        id, location, identifier, lab_name
+        id, location, identifier, lab_name,belong_dept
     </sql>
 
     <select id="selectLabs" resultMap="BaseResultMap" parameterType="com.laboratory.graduation.model.Lab">

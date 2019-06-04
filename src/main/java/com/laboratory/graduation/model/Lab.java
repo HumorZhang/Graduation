@@ -23,6 +23,16 @@ public class Lab implements Serializable {
 
     private String status;
 
+    private String belongDept;
+
+    public String getBelongDept() {
+        return belongDept;
+    }
+
+    public void setBelongDept(String belongDept) {
+        this.belongDept = belongDept;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -61,5 +71,16 @@ public class Lab implements Serializable {
 
     public void setLabName(String labName) {
         this.labName = labName;
+    }
+
+    @Override
+    public String toString() {
+        return "Lab{" +
+                "id=" + id +
+                ", location='" + location + '\'' +
+                ", identifier='" + identifier + '\'' +
+                ", labName='" + labName + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

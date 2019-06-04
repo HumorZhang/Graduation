@@ -8,6 +8,7 @@ import com.laboratory.graduation.model.Department;
 import com.laboratory.graduation.service.DepartmentService;
 import com.laboratory.graduation.util.PageUtil;
 import com.laboratory.graduation.util.ResultUtil;
+import com.laboratory.graduation.util.UUIDUtil;
 import com.laboratory.graduation.vo.base.PageResultVo;
 import com.laboratory.graduation.vo.base.ResponseVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/department")
-public class DepartmentControllerr {
+public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
 
@@ -55,19 +56,20 @@ public class DepartmentControllerr {
     public ResponseVo addLab(Department departmentForm){
 
 
-       Department department = departmentService.selectDepartmentBymajor(departmentForm);
+       Department department = departmentService.selectDepartmentByTeam(departmentForm);
         System.out.println(departmentForm.toString());
         if (null != department) {
-            return ResultUtil.error("专业已存在");
+            return ResultUtil.error("班级已存在");
         }
         departmentForm.setStatus(1);
+        departmentForm.setDeptId(UUIDUtil.getUniqueIdByUUId());
 
 
         int a = departmentService.add(departmentForm);
         if(a > 0){
-            return ResultUtil.success("添加专业成功");
+            return ResultUtil.success("添加成功");
         }else {
-            return ResultUtil.error("添加专业失败");
+            return ResultUtil.error("添加失败");
         }
     }
 

@@ -15,6 +15,27 @@ public class Department implements Serializable {
 
     private String major;
 
+   private String deptId;
+
+
+    private String team;
+
+    public String getTeam() {
+        return team;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
+
     public Integer getStatus() {
         return status;
     }

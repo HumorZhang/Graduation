@@ -24,12 +24,17 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department selectDepartmentBymajor(Department department) {
-        return departmentMapper.selectDepartmentByMajor(department);
+    public Department selectDepartmentByTeam(Department department) {
+        return departmentMapper.selectDepartmentByTeam(department);
     }
 
     @Override
     public int updateStatusById(String id) {
         return departmentMapper.updateStatusById(id);
+    }
+
+    @Override
+    public List<Department> selectMajor() {
+        return departmentMapper.selectMajor();
     }
 }

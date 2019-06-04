@@ -1,0 +1,189 @@
+<section class="content-header">
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">课程管理</a></li>
+        <li class="active">所有课程</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+
+
+
+    <div class="jax-box jax-box-table">
+        <div id="toolbar" class="btn-group">
+            <shiro:hasPermission name="course:add">
+                <button id="btn_add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#courseModal">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>申请课程
+                </button>
+            </shiro:hasPermission>
+
+        </div>
+        <table id="table"></table>
+    </div>
+</section>
+
+<!-- 详情模态框 -->
+<div id="courseDetailModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">开始打分</h4>
+            </div>
+            <div class="modal-body">
+                <div id="courseOpenWindow">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 新增模态框 -->
+
+<div id="courseModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新增课程</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="departmentForm">
+                    <div class="box-body">
+
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">专业 :</label>
+                            <div class="col-sm-8">
+                                <input name="major" class="form-control" placeholder="">
+                            </div>
+                        </div>
+
+                    <div class="form-group">
+                        <label  class="col-sm-3 control-label">班级 :</label>
+                        <div class="col-sm-8">
+                            <input name="team" class="form-control" placeholder="">
+                        </div>
+                    </div>
+            </div>
+            <div class="box-footer">
+                <div class="pull-right">
+                    <button type="button" id="saveDepartment" class="btn btn-info">确定</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+<script>
+
+    var editFlag = "[[${@perms.hasPerm('user:edit')}]]";
+    var columns = [
+        {checkbox: true },
+        {
+            field: 'courseName',
+            title: '课程名',
+            align : "center"
+        },{
+            field: 'major',
+            title: '专业',
+            align : "center"
+        },
+        {
+            field: 'teacher',
+            title: '老师',
+            align : "center"
+        },
+        {
+            field: 'score',
+            title: '学分',
+            align : "center"
+        }, {
+            field: 'classHour',
+            title: '学时',
+            align : "center"
+        }, {
+            field: 'courseNumber',
+            title: '课程编号',
+            align : "center"
+        },
+        {
+            field: 'userId',
+            title: '学生',
+            align : "center"
+        },
+        {
+            field: 'fraction',
+            title: '分数',
+            align : "center"
+        },
+
+        {
+            field : 'operation',
+            title : '操作',
+            align : "center",
+            formatter : function(value,
+                                 row, index) {
+                var edit = editFlag=="true" ?  '<a class="table-btn table-btn-info" href="javascript:void(0)" onclick="editUser('+row.id+')">打分</a>' : '';
+                return  edit;
+            }
+        }];
+    var options={
+        id:"#table",
+        url: '/course/list',
+        columns:columns,
+        toolbar: '#toolbar',
+        showRefresh: true,
+        queryParams : queryParams
+    }
+    Core.initTable(options);
+
+    /*查询参数*/
+    function queryParams(params) {
+        var temp = { //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+            limit : params.limit, //页面大小
+            offset : params.offset, //页码
+            major : $("#major").val()
+
+        };
+        return temp;
+    }
+
+    /*编辑*/
+    function editUser(courseId) {
+        Core.load("#courseOpenWindow","/course/edit?courseId="+courseId,function(){
+            $("#courseDetailModal").modal("show");
+        },2);
+    }
+
+
+
+
+    $(function () {
+
+        /*保存*/
+        $("#saveDepartment").click(function(){
+            if(doValidForm(departmentForm)){
+                Core.mask("#saveDepartment");
+                Core.postAjax("/department/add",$("#departmentForm").serialize(),function (data) {
+                    Core.unmask("#saveDepartment");
+                    if(data.status==200){
+                        $("#departmentModal").modal("hide");
+                        $("#departmentForm")[0].reset();
+                        Core.refreshTable("#table")
+                    }
+                    layer.msg(data.msg);
+                })
+            };
+        });
+
+
+    });
+
+</script>

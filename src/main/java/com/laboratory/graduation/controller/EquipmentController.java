@@ -142,7 +142,7 @@ public class EquipmentController {
 
 
     @RequestMapping("/import")
-    public String importExcel2(@RequestParam("file") MultipartFile file) {
+    public String importExcel(@RequestParam("file") MultipartFile file) {
         ImportParams importParams = new ImportParams();
         // 数据处理
         importParams.setHeadRows(1);
@@ -188,7 +188,7 @@ public class EquipmentController {
 
     @PostMapping("/edit")
     @ResponseBody
-    public ResponseVo editLab(Equipment equipmentForm){
+    public ResponseVo editEquipment(Equipment equipmentForm){
         int a = equipmentService.updateByNumber(equipmentForm);
         System.out.println("id="+equipmentForm.getId());
         System.out.println("damage="+equipmentForm.getDamage());
@@ -205,7 +205,7 @@ public class EquipmentController {
     /**删除实验室*/
     @GetMapping("/delete")
     @ResponseBody
-    public ResponseVo deleteUser(String id) {
+    public ResponseVo deleteEquipment(String id) {
 
         int a = equipmentService.updateStatusById(id);
         if (a > 0) {

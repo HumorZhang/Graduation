@@ -1,0 +1,40 @@
+<form class="form-horizontal" id="courseDetailForm">
+    <input class="hidden" name="id" th:value="${courseId}">
+    <div class="box-body">
+
+
+
+        <div class="form-group">
+            <label  class="col-sm-3 control-label">分数 :</label>
+            <div class="col-sm-8">
+                <input name="fraction" class="form-control" placeholder="" >
+            </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+        <div class="pull-right">
+            <button type="button" id="saveDetailcourse" class="btn btn-info">确定</button>
+            <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
+        </div>
+    </div>
+    <!-- /.box-footer -->
+</form>
+<script>
+    $(function () {
+        $("#saveDetailcourse").on('click', function () {
+            if (doValidForm(courseDetailForm)) {
+                Core.mask("#saveDetailcourse");
+                Core.postAjax("/course/edit",$("#courseDetailForm").serialize(),function (data) {
+                    if (data.status == 200) {
+                        Core.unmask("#saveDetailcourse");
+                        $("#courseDetailModal").modal("hide");
+                        $("#myModal").modal("hide");
+                        Core.refreshTable("#table",true);
+                    }
+                    layer.msg(data.msg);
+                })
+            }
+        });
+    });
+</script>

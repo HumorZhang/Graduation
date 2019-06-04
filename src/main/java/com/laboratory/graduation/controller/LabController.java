@@ -3,9 +3,11 @@ package com.laboratory.graduation.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.laboratory.graduation.model.Department;
 import com.laboratory.graduation.model.Lab;
 
 import com.laboratory.graduation.model.User;
+import com.laboratory.graduation.service.DepartmentService;
 import com.laboratory.graduation.service.LabService;
 import com.laboratory.graduation.util.CoreConst;
 import com.laboratory.graduation.util.PageUtil;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
+
 import java.util.List;
 
 /**
@@ -33,21 +35,28 @@ public class LabController {
     @Autowired
     private LabService labService;
 
+    @Autowired
+    private DepartmentService departmentService;
 
     @PostMapping("/list")
     @ResponseBody
-    public PageResultVo loadLab(Lab lab, Integer limit, Integer offset){
+    public PageResultVo loadLab(Lab lab, Integer limit, Integer offset,Model model){
         PageHelper.startPage(PageUtil.getPageNo(limit, offset),limit);
-
-
         List<Lab> labList = labService.selectLab(lab);
         PageInfo<Lab> pages = new PageInfo<>(labList);
         return ResultUtil.table(labList,pages.getTotal());
     }
 
+//    @GetMapping("/123")
+//    @ResponseBody
+//    public String haha(){
+//        List<Department> list1 = departmentService.selectMajor();
+//        System.out.println(list1.toString());
+//        return null;
+//    }
     /**编辑实验室详情*/
     @GetMapping("/edit")
-    public String userDetail(Model model, String id){
+    public String labDetail(Model model, String id){
         Lab lab = labService.selectLabById(id);
 
         model.addAttribute("lab", lab);
@@ -59,7 +68,7 @@ public class LabController {
     @ResponseBody
     public ResponseVo editLab(Lab labForm){
         int a = labService.updateByLabId(labForm);
-        System.out.println(labForm);
+
         if (a > 0) {
             return ResultUtil.success("编辑实验室成功！");
         } else {
@@ -72,13 +81,12 @@ public class LabController {
     @ResponseBody
     public ResponseVo addLab(Lab labForm){
 
-
-        List lab = labService.selectLab(labForm);
-        if (null != lab) {
-            return ResultUtil.error("实验室已存在");
-        }
+//        List lab = labService.selectLab(labForm);
+//        if (null != lab) {
+//            return ResultUtil.error("实验室已存在");
+//        }
         labForm.setStatus("1");
-        System.out.println(labForm.toString());
+
 
         int a = labService.addLab(labForm);
         if(a > 0){

@@ -10,7 +10,9 @@ public interface DepartmentService {
 
     int add(Department department);
 
-    Department selectDepartmentBymajor(Department department);
+    Department selectDepartmentByTeam(Department department);
 
     int updateStatusById(String id);
+
+    List<Department> selectMajor();
 }
